@@ -10,11 +10,11 @@
     <title>Giỏ hàng - Phụ Tùng Xe Máy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Include header -->
-    <jsp:include page="includes/header.jsp"/>
+    <jsp:include page="../common/includes/header.jsp"/>
     
     <div class="container my-4">
         <!-- Breadcrumb -->
@@ -37,9 +37,9 @@
                                 <c:forEach var="item" items="${cartItems}" varStatus="status">
                                     <div class="row cart-item mb-3 ${status.last ? '' : 'border-bottom pb-3'}">
                                         <div class="col-md-2">
-                                            <img src="${pageContext.request.contextPath}/images/${item.productImage}" 
+                                            <img src="${pageContext.request.contextPath}/resources/images/${item.productImage}" 
                                                  class="img-fluid rounded" alt="${item.productName}"
-                                                 onerror="this.src='${pageContext.request.contextPath}/images/default-product.jpg'">
+                                                 onerror="this.src='${pageContext.request.contextPath}/resources/images/default-product.jpg'">
                                         </div>
                                         <div class="col-md-4">
                                             <h6 class="mb-1">${item.productName}</h6>
@@ -198,7 +198,7 @@
     </div>
     
     <!-- Include footer -->
-    <jsp:include page="includes/footer.jsp"/>
+    <jsp:include page="../common/includes/footer.jsp"/>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -208,7 +208,7 @@
         window.userLoggedIn = ${sessionScope.user != null ? 'true' : 'false'};
     </script>
     
-    <script src="${pageContext.request.contextPath}/js/script.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/script.js"></script>
     
     <script>
         function updateCartQuantity(productId, quantity) {

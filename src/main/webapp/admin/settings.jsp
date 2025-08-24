@@ -10,7 +10,7 @@
     <title>Cài đặt hệ thống - Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Include admin header -->
@@ -228,7 +228,12 @@
                                     </div>
                                     <div class="col-md-3">
                                         <strong>Last Update:</strong><br>
-                                        <fmt:formatDate value="${pageContext.session.creationTime}" pattern="dd/MM/yyyy HH:mm" />
+                                        <%
+                                            long creationTime = session.getCreationTime();
+                                            java.util.Date creationDate = new java.util.Date(creationTime);
+                                            request.setAttribute("sessionCreationDate", creationDate);
+                                        %>
+                                        <fmt:formatDate value="${sessionCreationDate}" pattern="dd/MM/yyyy HH:mm" />
                                     </div>
                                 </div>
                             </div>

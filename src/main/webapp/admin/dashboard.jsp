@@ -10,7 +10,7 @@
     <title>Dashboard - Quản Trị Phụ Tùng Xe Máy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
     <style>
         .stats-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -171,7 +171,7 @@
                                     <c:when test="${not empty latestProducts}">
                                         <c:forEach var="product" items="${latestProducts}" end="4">
                                             <div class="d-flex align-items-center mb-3">
-                                                <img src="${pageContext.request.contextPath}/images/${product.image}" 
+                                                <img src="${pageContext.request.contextPath}/resources/images/${product.image}" 
                                                      alt="${product.name}" class="rounded me-3" 
                                                      style="width: 50px; height: 50px; object-fit: cover;">
                                                 <div class="flex-grow-1">

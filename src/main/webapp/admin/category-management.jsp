@@ -10,7 +10,7 @@
     <title>Quản lý danh mục - Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Include admin header -->
@@ -76,10 +76,10 @@
                                                 <tr>
                                                     <td>${category.id}</td>
                                                     <td>
-                                                        <img src="${pageContext.request.contextPath}/images/${category.image}" 
+                                                        <img src="${pageContext.request.contextPath}/resources/images/${category.image}" 
                                                              class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;"
                                                              alt="${category.name}"
-                                                             onerror="this.src='${pageContext.request.contextPath}/images/default-product.jpg'">
+                                                             onerror="this.src='${pageContext.request.contextPath}/resources/images/default-product.jpg'">
                                                     </td>
                                                     <td><strong>${category.name}</strong></td>
                                                     <td>${category.description}</td>
@@ -248,12 +248,12 @@
             
             // Cập nhật hình ảnh xem trước
             if (image) {
-                modalCurrentImage.src = '${pageContext.request.contextPath}/images/' + image;
+                                        modalCurrentImage.src = '${pageContext.request.contextPath}/resources/images/' + image;
                 // Hiển thị phần xem trước nếu có ảnh
                 modalCurrentImage.closest('div').style.display = 'block';
             } else {
                 // Ẩn hoặc đặt ảnh placeholder nếu không có
-                modalCurrentImage.src = '${pageContext.request.contextPath}/images/default-category.jpg';
+                                        modalCurrentImage.src = '${pageContext.request.contextPath}/resources/images/default-category.jpg';
             }
         });
     </script>

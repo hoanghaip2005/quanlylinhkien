@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="com.phutungxe.model.User" %>
+<%@ page import="com.phutungxe.model.entity.User" %>
 <%
     User user = (User) session.getAttribute("user");
     if (user == null || (!"admin".equals(user.getRole()) && !"ADMIN".equals(user.getRole()))) {
@@ -149,13 +149,13 @@
 
                                     <div class="mb-3">
                                         <label for="productImage" class="form-label">Ảnh Sản Phẩm</label>
-                                        <input type="file" id="productImage" name="productImage" class="form-control" accept="image/*" onchange="previewImage(this)">
+                                        <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewImage(this)">
                                         <div class="form-text">Chọn ảnh để thay đổi, bỏ trống để giữ ảnh hiện tại.</div>
                                         <!-- Current image preview -->
                                         <div class="mt-2">
-                                            <img id="currentImage" src="${pageContext.request.contextPath}/images/${product.image}" 
+                                            <img id="currentImage" src="${pageContext.request.contextPath}/resources/images/${product.image}" 
                                                  alt="Ảnh hiện tại" style="max-width: 150px; max-height: 150px; object-fit: cover;" 
-                                                 onerror="this.src='${pageContext.request.contextPath}/images/default-product.jpg'">
+                                                                                                    onerror="this.src='${pageContext.request.contextPath}/resources/images/default-product.jpg'">
                                             <p class="small text-muted mt-1">Ảnh hiện tại</p>
                                         </div>
                                         <!-- New image preview -->
@@ -255,11 +255,15 @@
 
         // Form validation and submission
         document.getElementById('editForm').addEventListener('submit', function(e) {
+            console.log('Form submission started');
+            
             const submitBtn = document.getElementById('submitBtn');
             const name = document.getElementById('name').value.trim();
             const price = parseFloat(document.getElementById('price').value);
             const stock = parseInt(document.getElementById('stockQuantity').value);
             const category = document.getElementById('categoryId').value;
+
+            console.log('Form values:', { name, price, stock, category });
 
             // Basic validation
             if (!name) {
@@ -285,6 +289,8 @@
                 e.preventDefault();
                 return;
             }
+
+            console.log('Validation passed, submitting form...');
 
             // Show loading state
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang cập nhật...';

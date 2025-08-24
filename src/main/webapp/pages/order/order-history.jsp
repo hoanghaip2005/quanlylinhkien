@@ -12,7 +12,7 @@
 </head>
 <body>
     <!-- Include header -->
-    <jsp:include page="/pages/common/header.jsp" />
+    <jsp:include page="../common/includes/header.jsp" />
     
     <div class="container mt-4">
         <div class="row">
@@ -117,7 +117,7 @@
     </div>
     
     <!-- Include footer -->
-    <jsp:include page="/pages/common/footer.jsp" />
+    <jsp:include page="../common/includes/footer.jsp" />
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

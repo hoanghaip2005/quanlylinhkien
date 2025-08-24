@@ -103,14 +103,14 @@
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Tên sản phẩm *</label>
                                                 <input type="text" class="form-control" id="name" name="name" 
-                                                       value="${product.name}" required>
+                                                       value="${product != null ? product.name : ''}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="brand" class="form-label">Thương hiệu *</label>
                                                 <input type="text" class="form-control" id="brand" name="brand" 
-                                                       value="${product.brand}" required>
+                                                       value="${product != null ? product.brand : ''}" required>
                                             </div>
                                         </div>
                                     </div>
@@ -120,14 +120,14 @@
                                             <div class="mb-3">
                                                 <label for="model" class="form-label">Model</label>
                                                 <input type="text" class="form-control" id="model" name="model" 
-                                                       value="${product.model}">
+                                                       value="${product != null ? product.model : ''}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="yearCompatible" class="form-label">Năm tương thích</label>
                                                 <input type="text" class="form-control" id="yearCompatible" name="yearCompatible" 
-                                                       value="${product.yearCompatible}" placeholder="VD: 2018-2024">
+                                                       value="${product != null ? product.yearCompatible : ''}" placeholder="VD: 2018-2024">
                                             </div>
                                         </div>
                                     </div>
@@ -139,9 +139,9 @@
                                                 <select class="form-select" id="categoryId" name="categoryId" required>
                                                     <option value="">Chọn danh mục</option>
                                                     <c:forEach var="category" items="${categories}">
-                                                        <option value="${category.getId()}" 
-                                                                ${product.getCategoryId() == category.getId() ? 'selected' : ''}>
-                                                            ${category.categoryName}
+                                                        <option value="${category.id}" 
+                                                                ${product != null && product.categoryId == category.id ? 'selected' : ''}>
+                                                            ${category.name}
                                                         </option>
                                                     </c:forEach>
                                                 </select>
@@ -151,7 +151,7 @@
                                             <div class="mb-3">
                                                 <label for="price" class="form-label">Giá (₫) *</label>
                                                 <input type="number" class="form-control" id="price" name="price" 
-                                                       value="${product.price}" min="0" step="1000" required>
+                                                       value="${product != null ? product.price : ''}" min="0" step="1000" required>
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                                             <div class="mb-3">
                                                 <label for="stockQuantity" class="form-label">Số lượng tồn kho *</label>
                                                 <input type="number" class="form-control" id="stockQuantity" name="stockQuantity" 
-                                                       value="${product.stockQuantity}" min="0" required>
+                                                       value="${product != null ? product.stockQuantity : ''}" min="0" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -178,8 +178,8 @@
 
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Mô tả sản phẩm</label>
-                                        <textarea class="form-control" id="description" name="description" 
-                                                  rows="4" placeholder="Mô tả chi tiết về sản phẩm...">${product.description}</textarea>
+                                                                                        <textarea class="form-control" id="description" name="description" 
+                                                          rows="4" placeholder="Mô tả chi tiết về sản phẩm...">${product != null ? product.description : ''}</textarea>
                                     </div>
 
                                     <div class="d-flex justify-content-between">
@@ -207,16 +207,19 @@
                             </div>
                             <div class="card-body">
                                 <c:if test="${product != null && not empty product.image}">
-                                    <img src="${pageContext.request.contextPath}/images/products/${product.image}" 
-                                         class="img-fluid mb-3" alt="${product.name}" style="max-height: 200px;">
+                                    <img src="${pageContext.request.contextPath}/resources/images/${product.image}" 
+                                         class="img-fluid mb-3" alt="${product != null ? product.name : 'Product'}" style="max-height: 200px;">
                                 </c:if>
-                                <h6>${product.name}</h6>
-                                <p class="text-muted">${product.brand} ${product.model}</p>
+                                <h6>${product != null ? product.name : 'Tên sản phẩm'}</h6>
+                                <p class="text-muted">${product != null ? product.brand : 'Thương hiệu'} ${product != null ? product.model : 'Model'}</p>
                                 <h5 class="text-primary">
-                                    <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/>
+                                    <c:if test="${product != null}">
+                                        <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫"/>
+                                    </c:if>
+                                    <c:if test="${product == null}">0 ₫</c:if>
                                 </h5>
-                                <p><small>Tồn kho: ${product.stockQuantity}</small></p>
-                                <p class="small">${product.description}</p>
+                                <p><small>Tồn kho: ${product != null ? product.stockQuantity : '0'}</small></p>
+                                <p class="small">${product != null ? product.description : 'Mô tả sản phẩm sẽ hiển thị ở đây...'}</p>
                             </div>
                         </div>
                     </div>

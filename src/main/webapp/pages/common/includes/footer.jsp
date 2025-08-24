@@ -54,7 +54,7 @@
                 <p class="mb-0">&copy; 2024 Phụ Tùng Xe Máy. Tất cả quyền được bảo lưu.</p>
             </div>
             <div class="col-md-6 text-md-end">
-                <img src="${pageContext.request.contextPath}/images/payment-methods.svg" alt="Payment Methods" class="img-fluid" style="max-height: 40px;">
+                <img src="${pageContext.request.contextPath}/resources/images/payment-methods.svg" alt="Payment Methods" class="img-fluid" style="max-height: 40px;">
             </div>
         </div>
     </div>

@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1MB
@@ -55,18 +56,18 @@ public class AdminProductServlet extends HttpServlet {
         }
 
         switch (action) {
- //           case "add":
-//                showAddForm(request, response);
-//                break;
-//            case "edit":
- //               showEditForm(request, response);
- //               break;
- //           case "simple":
- //               showSimpleEditForm(request, response);
-//                break;
-//            case "get":
- //               getProductAsJson(request, response);
- //               break;
+            case "add":
+                showAddForm(request, response);
+                break;
+            case "edit":
+                showEditForm(request, response);
+                break;
+            case "simple":
+                showSimpleEditForm(request, response);
+                break;
+            case "get":
+                getProductAsJson(request, response);
+                break;
             case "delete":
                 deleteProduct(request, response);
                 break;
@@ -104,6 +105,11 @@ public class AdminProductServlet extends HttpServlet {
             return;
         }
 
+        System.out.println("DEBUG: Switch statement started");
+        System.out.println("DEBUG: Action value: '" + action + "'");
+        System.out.println("DEBUG: Action length: " + (action != null ? action.length() : "NULL"));
+        System.out.println("DEBUG: Action equals 'updateSimple': " + "updateSimple".equals(action));
+        
         switch (action) {
             case "add":
                 System.out.println("DEBUG: Calling addProduct");
@@ -113,16 +119,20 @@ public class AdminProductServlet extends HttpServlet {
                 System.out.println("DEBUG: Calling updateProduct");
                 updateProduct(request, response);
                 break;
-//            case "updateSimple":
-//                System.out.println("DEBUG: Calling updateProductSimple");
-//                updateProductSimple(request, response);
- //               break;
+            case "updateSimple":
+                System.out.println("DEBUG: Calling updateProductSimple - Action: " + action);
+                System.out.println("DEBUG: About to call updateProductSimple method");
+                updateProductSimple(request, response);
+                System.out.println("DEBUG: updateProductSimple method call completed");
+                break;
             case "delete":
                 System.out.println("DEBUG: Calling deleteProduct");
                 deleteProduct(request, response);
                 break;
             default:
-                System.out.println("DEBUG: Unknown action, redirecting to products");
+                System.out.println("DEBUG: Unknown action: '" + action + "', redirecting to products");
+                System.out.println("DEBUG: Action hash code: " + (action != null ? action.hashCode() : "NULL"));
+                System.out.println("DEBUG: 'updateSimple' hash code: " + "updateSimple".hashCode());
                 response.sendRedirect(request.getContextPath() + "/admin/products");
                 break;
         }
@@ -143,9 +153,29 @@ public class AdminProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         System.out.println("DEBUG: showAddForm called");
-        List<Category> categories = categoryDAO.getAllCategories();
-        request.setAttribute("categories", categories);
-        request.getRequestDispatcher("/admin/add-product.jsp").forward(request, response);
+        try {
+            List<Category> categories = categoryDAO.getAllCategories();
+            System.out.println("DEBUG: Categories loaded: " + (categories != null ? categories.size() : "NULL"));
+            if (categories == null) {
+                categories = new ArrayList<>();
+                System.out.println("DEBUG: Categories was null, created empty list");
+            }
+            request.setAttribute("categories", categories);
+            System.out.println("DEBUG: Forwarding to product-form.jsp");
+            request.getRequestDispatcher("/admin/product-form.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println("ERROR: Exception in showAddForm: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback: set empty categories list and continue
+            request.setAttribute("categories", new ArrayList<>());
+            request.setAttribute("error", "Không thể load danh mục: " + e.getMessage());
+            try {
+                request.getRequestDispatcher("/admin/product-form.jsp").forward(request, response);
+            } catch (Exception forwardException) {
+                System.out.println("ERROR: Forward failed: " + forwardException.getMessage());
+                response.sendRedirect(request.getContextPath() + "/admin/products");
+            }
+        }
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
@@ -314,16 +344,16 @@ public class AdminProductServlet extends HttpServlet {
 
             // Handle image upload
             String imageName = "default-product.jpg"; // Default image
-            Part filePart = request.getPart("productImage");
+            Part filePart = request.getPart("image");
             if (filePart != null && filePart.getSize() > 0) {
-                String fileName = filePart.getSubmittedFileName();
+                String fileName = getFileName(filePart);
                 if (fileName != null && !fileName.isEmpty()) {
                     // Create unique filename
                     String fileExtension = fileName.substring(fileName.lastIndexOf("."));
                     imageName = UUID.randomUUID().toString() + fileExtension;
 
                     // Save file to images directory
-                    String uploadPath = getServletContext().getRealPath("/images/");
+                    String uploadPath = getServletContext().getRealPath("/resources/images/");
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -521,6 +551,10 @@ public class AdminProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         System.out.println("=== DEBUG: updateProductSimple method called ===");
+        System.out.println("DEBUG: Method exists and is being called!");
+        System.out.println("DEBUG: Request content type: " + request.getContentType());
+        System.out.println("DEBUG: Request method: " + request.getMethod());
+        System.out.println("DEBUG: Method execution started successfully");
 
         try {
             // Get all parameters
@@ -531,13 +565,21 @@ public class AdminProductServlet extends HttpServlet {
             String stockStr = request.getParameter("stockQuantity");
             String categoryIdStr = request.getParameter("categoryId");
 
-            System.out.println("DEBUG: All Parameters received:");
-            System.out.println("  - ID: " + idStr);
-            System.out.println("  - Name: " + name);
-            System.out.println("  - Description: " + description);
-            System.out.println("  - Price: " + priceStr);
-            System.out.println("  - Stock: " + stockStr);
-            System.out.println("  - CategoryId: " + categoryIdStr);
+                    System.out.println("DEBUG: All Parameters received:");
+        System.out.println("  - ID: " + idStr);
+        System.out.println("  - Name: " + name);
+        System.out.println("  - Description: " + description);
+        System.out.println("  - Price: " + priceStr);
+        System.out.println("  - Stock: " + stockStr);
+        System.out.println("  - CategoryId: " + categoryIdStr);
+        
+        // Debug: Check if any parameters are null or empty
+        System.out.println("DEBUG: Parameter validation:");
+        System.out.println("  - ID null/empty: " + (idStr == null || idStr.trim().isEmpty()));
+        System.out.println("  - Name null/empty: " + (name == null || name.trim().isEmpty()));
+        System.out.println("  - Price null/empty: " + (priceStr == null || priceStr.trim().isEmpty()));
+        System.out.println("  - Stock null/empty: " + (stockStr == null || stockStr.trim().isEmpty()));
+        System.out.println("  - Category null/empty: " + (categoryIdStr == null || categoryIdStr.trim().isEmpty()));
 
             // Basic validation
             if (idStr == null || name == null || priceStr == null || stockStr == null || categoryIdStr == null) {
@@ -572,16 +614,26 @@ public class AdminProductServlet extends HttpServlet {
 
             // Handle image upload (optional for update)
             String imageName = existingProduct.getImage(); // Keep existing image by default
-            Part filePart = request.getPart("productImage");
+            System.out.println("DEBUG: Current image: " + imageName);
+            
+            Part filePart = request.getPart("image");
+            System.out.println("DEBUG: File part received: " + (filePart != null));
+            if (filePart != null) {
+                System.out.println("DEBUG: File size: " + filePart.getSize());
+                System.out.println("DEBUG: File content type: " + filePart.getContentType());
+            }
+            
             if (filePart != null && filePart.getSize() > 0) {
-                String fileName = filePart.getSubmittedFileName();
+                String fileName = getFileName(filePart);
+                System.out.println("DEBUG: Extracted filename: " + fileName);
+                
                 if (fileName != null && !fileName.isEmpty()) {
                     // Create unique filename
                     String fileExtension = fileName.substring(fileName.lastIndexOf("."));
                     imageName = UUID.randomUUID().toString() + fileExtension;
 
                     // Save file to images directory
-                    String uploadPath = getServletContext().getRealPath("/images/");
+                    String uploadPath = getServletContext().getRealPath("/resources/images/");
                     File uploadDir = new File(uploadPath);
                     if (!uploadDir.exists()) {
                         uploadDir.mkdirs();
@@ -592,9 +644,19 @@ public class AdminProductServlet extends HttpServlet {
 
                     System.out.println("DEBUG: Image updated: " + imageName);
                 }
+            } else {
+                System.out.println("DEBUG: No new image uploaded, keeping existing: " + imageName);
             }
 
             // Update only the fields we care about
+            System.out.println("DEBUG: Updating product fields:");
+            System.out.println("  - Old name: " + existingProduct.getName() + " -> New name: " + name);
+            System.out.println("  - Old description: " + existingProduct.getDescription() + " -> New description: " + description);
+            System.out.println("  - Old price: " + existingProduct.getPrice() + " -> New price: " + price);
+            System.out.println("  - Old stock: " + existingProduct.getStockQuantity() + " -> New stock: " + stockQuantity);
+            System.out.println("  - Old category: " + existingProduct.getCategoryId() + " -> New category: " + categoryId);
+            System.out.println("  - Old image: " + existingProduct.getImage() + " -> New image: " + imageName);
+            
             existingProduct.setName(name);
             existingProduct.setDescription(description != null ? description : "");
             existingProduct.setPrice(price);
@@ -602,9 +664,18 @@ public class AdminProductServlet extends HttpServlet {
             existingProduct.setCategoryId(categoryId);
             existingProduct.setImage(imageName);
 
-            System.out.println("DEBUG: About to call productDAO.updateProduct()");
-            boolean success = productDAO.updateProduct(existingProduct);
-            System.out.println("DEBUG: Update result: " + success);
+                    System.out.println("DEBUG: About to call productDAO.updateProduct()");
+        System.out.println("DEBUG: Product to update:");
+        System.out.println("  - ID: " + existingProduct.getId());
+        System.out.println("  - Name: " + existingProduct.getName());
+        System.out.println("  - Description: " + existingProduct.getDescription());
+        System.out.println("  - Price: " + existingProduct.getPrice());
+        System.out.println("  - Stock: " + existingProduct.getStockQuantity());
+        System.out.println("  - Category: " + existingProduct.getCategoryId());
+        System.out.println("  - Image: " + existingProduct.getImage());
+        
+        boolean success = productDAO.updateProduct(existingProduct);
+        System.out.println("DEBUG: Update result: " + success);
 
             if (success) {
                 System.out.println("SUCCESS: Product updated successfully");
@@ -700,5 +771,19 @@ public class AdminProductServlet extends HttpServlet {
         request.setAttribute("categories", categories);
         request.setAttribute("searchKeyword", keyword);
         request.getRequestDispatcher("/admin/product-management.jsp").forward(request, response);
+    }
+    
+    /**
+     * Helper method to get filename from Part in a Servlet 3.0 compatible way
+     */
+    private String getFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] tokens = contentDisp.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return "";
     }
 }

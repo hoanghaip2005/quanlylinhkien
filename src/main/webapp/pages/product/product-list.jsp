@@ -10,11 +10,11 @@
     <title>${pageTitle} - Phụ Tùng Xe Máy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Include header -->
-    <jsp:include page="includes/header.jsp"/>
+    <jsp:include page="../common/includes/header.jsp"/>
     
     <div class="container my-4">
         <!-- Breadcrumb -->
@@ -80,9 +80,9 @@
                             <c:forEach var="product" items="${products}">
                                 <div class="col-lg-4 col-md-6 mb-4">
                                     <div class="card product-card h-100">
-                                        <img src="${pageContext.request.contextPath}/images/${product.image}" 
+                                        <img src="${pageContext.request.contextPath}/resources/images/${product.image}" 
                                              class="card-img-top" alt="${product.name}"
-                                             onerror="this.src='${pageContext.request.contextPath}/images/default-product.jpg'">
+                                             onerror="this.src='${pageContext.request.contextPath}/resources/images/default-product.jpg'">
                                         <div class="card-body d-flex flex-column">
                                             <h6 class="card-title">${product.name}</h6>
                                             <p class="card-text text-muted small">${product.brand} - ${product.categoryName}</p>
@@ -143,16 +143,16 @@
     </div>
     
     <!-- Include footer -->
-    <jsp:include page="includes/footer.jsp"/>
+    <jsp:include page="../common/includes/footer.jsp"/>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
         // Set global variables for JavaScript
         window.contextPath = '${pageContext.request.contextPath}';
-        window.userLoggedIn = ${sessionScope.user != null};
+        window.userLoggedIn = '${sessionScope.user != null}' === 'true';
     </script>
     
-    <script src="${pageContext.request.contextPath}/js/script.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/script.js"></script>
 </body>
 </html>

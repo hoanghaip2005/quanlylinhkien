@@ -10,11 +10,11 @@
     <title>${product.name} - Phụ Tùng Xe Máy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Include header -->
-    <jsp:include page="includes/header.jsp"/>
+    <jsp:include page="../common/includes/header.jsp"/>
     
     <div class="container my-4">
         <!-- Breadcrumb -->
@@ -30,9 +30,9 @@
             <!-- Product Image -->
             <div class="col-lg-6 mb-4">
                 <div class="text-center">
-                    <img src="${pageContext.request.contextPath}/images/${product.image}" 
+                    <img src="${pageContext.request.contextPath}/resources/images/${product.image}" 
                          class="img-fluid rounded" alt="${product.name}"
-                         onerror="this.src='${pageContext.request.contextPath}/images/default-product.jpg'"
+                         onerror="this.src='${pageContext.request.contextPath}/resources/images/default-product.jpg'"
                          style="max-height: 500px;">
                 </div>
             </div>
@@ -243,9 +243,9 @@
                         <c:forEach var="relatedProduct" items="${relatedProducts}" end="3">
                             <div class="col-lg-3 col-md-6 mb-4">
                                 <div class="card product-card h-100">
-                                    <img src="${pageContext.request.contextPath}/images/${relatedProduct.image}" 
+                                    <img src="${pageContext.request.contextPath}/resources/images/${relatedProduct.image}" 
                                          class="card-img-top" alt="${relatedProduct.name}"
-                                         onerror="this.src='${pageContext.request.contextPath}/images/default-product.jpg'">
+                                         onerror="this.src='${pageContext.request.contextPath}/resources/images/default-product.jpg'">
                                     <div class="card-body">
                                         <h6 class="card-title">${relatedProduct.name}</h6>
                                         <p class="card-text text-primary">
@@ -266,7 +266,7 @@
     </div>
     
     <!-- Include footer -->
-    <jsp:include page="includes/footer.jsp"/>
+    <jsp:include page="../common/includes/footer.jsp"/>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -278,7 +278,7 @@
         window.maxQuantity = ${product.stockQuantity};
     </script>
     
-    <script src="${pageContext.request.contextPath}/js/script.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/script.js"></script>
     
     <script>
         function increaseQuantity() {

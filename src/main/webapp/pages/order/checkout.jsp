@@ -10,11 +10,11 @@
     <title>Thanh toán - Phụ Tùng Xe Máy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Include header -->
-    <jsp:include page="includes/header.jsp"/>
+    <jsp:include page="../common/includes/header.jsp"/>
     
     <div class="container my-4">
         <!-- Breadcrumb -->
@@ -277,7 +277,7 @@
     </div>
     
     <!-- Include footer -->
-    <jsp:include page="includes/footer.jsp"/>
+    <jsp:include page="../common/includes/footer.jsp"/>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
